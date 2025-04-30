@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -14,6 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard() {
+    const [open, setOpen] = useState(false);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -21,9 +23,9 @@ export default function Dashboard() {
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-row items-center justify-between">
                         <h2>Tasks</h2>
-                        <Dialog>
+                        <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
-                                <button className="flex flex-row items-center justify-center gap-2 rounded-sm bg-[#4F46E5] px-3 py-1 font-bold text-white">
+                                <button className="flex flex-row items-center justify-center gap-2 rounded-sm bg-custom-violet px-3 py-1 font-bold text-white cursor-pointer">
                                     <FaPlus />
                                     Create
                                 </button>
@@ -32,7 +34,7 @@ export default function Dashboard() {
                                 <DialogHeader>
                                     <DialogTitle>Create New Task</DialogTitle>
                                 </DialogHeader>
-                                <TaskForm />
+                                <TaskForm onClose={() => setOpen(false)} />
                             </DialogContent>
                         </Dialog>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -13,7 +14,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Auth::user()->tasks()->latest()->get();
+        $tasks = Auth::user()->tasks()->latest()->get();
+
+        return Inertia::render('Dashboard', [
+            'tasks' => $tasks,
+        ]);
     }
 
     /**
@@ -34,9 +39,8 @@ class TaskController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $task = Auth::user()->tasks()->create($validated);
-
-        return response()->json($task, 201);
+        $request->user()->tasks()->create($validated);
+        return redirect()->back()->with('success', 'Task created successfully.');
     }
 
     /**
@@ -90,5 +94,17 @@ class TaskController extends Controller
         $task->delete();
 
         return response()->json(['message' => 'Task deleted successfully']);
+    }
+
+    public function toggleComplete(Task $task)
+    {
+        if ($task->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $task->is_completed = !$task->is_completed;
+        $task->save();
+
+        return response()->json($task);
     }
 }
