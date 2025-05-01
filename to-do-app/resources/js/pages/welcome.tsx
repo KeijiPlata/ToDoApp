@@ -81,12 +81,21 @@ export default function Welcome() {
                                 Stay productive and on track with our easy-to-use task manager. Whether you're planning a project or just managing
                                 your day, we've got you covered.
                             </p>
-                            <Link
-                                href={route('register')}
-                                className="bg-custom-violet hover:bg-custom-light-violet inline-block rounded-sm px-6 py-3 font-medium text-white transition-colors"
-                            >
-                                Sign Up Now
-                            </Link>
+                            {auth.user ? (
+                                <Link
+                                    href={route('dashboard')}
+                                    className="bg-custom-violet hover:bg-custom-light-violet inline-block rounded-sm px-6 py-3 font-medium text-white transition-colors"
+                                >
+                                    Start your task!
+                                </Link>
+                            ) : (
+                                <Link
+                                    href={route('register')}
+                                    className="bg-custom-violet hover:bg-custom-light-violet inline-block rounded-sm px-6 py-3 font-medium text-white transition-colors"
+                                >
+                                    Sign Up Now!
+                                </Link>
+                            )}
                         </motion.div>
 
                         <motion.div
