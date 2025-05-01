@@ -16,7 +16,7 @@ class TaskController extends Controller
     {
         $tasks = Auth::user()->tasks()->latest()->get();
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('dashboard', [
             'tasks' => $tasks,
         ]);
     }
@@ -35,8 +35,8 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required|string|max:50',
+            'description' => 'nullable|string|max:200',
         ]);
 
         $request->user()->tasks()->create($validated);
@@ -73,8 +73,8 @@ class TaskController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required|string|max:30',
+            'description' => 'nullable|string|max:200',
         ]);
 
         $task->update($validated);

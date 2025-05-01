@@ -2,41 +2,39 @@ import EditTaskForm from '@/components/EditTaskForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { FaCheck, FaEdit, FaTimes, FaTrash } from 'react-icons/fa';
 
-export default function TaskItem() {
-    const sampleTask = {
-        id: 1,
-        title: 'Finish React Project',
-        description: 'Complete all components and test functionality.',
-        is_completed: false,
-    };
-
+export default function TaskItem({ task }) {
     return (
-        <div className="dark:bg-muted mb-2 flex items-start justify-between rounded-xl border bg-white p-4 shadow-sm">
-            <div className="flex flex-col">
-                <h3 className={`text-base font-medium ${sampleTask.is_completed ? 'text-muted-foreground line-through' : ''}`}>{sampleTask.title}</h3>
-                {sampleTask.description && <p className="text-muted-foreground mt-1 text-sm">{sampleTask.description}</p>}
-            </div>
+        <div className="dark:bg-muted flex w-full items-start justify-between rounded-md border bg-white p-4 shadow-sm md:rounded-xl">
+            <div className="flex w-full flex-col">
+                <div className="flex flex-row items-center justify-between gap-5">
+                    <h3 className={`max-w-[75%] text-base font-medium break-all ${task.is_completed ? 'text-muted-foreground line-through' : ''}`}>
+                        {task.title}
+                    </h3>
+                    <div className="flex shrink-0 items-center gap-2">
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <button className="text-muted-foreground hover:text-primary m-0 p-0">
+                                    <FaEdit className="text-base" />
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Edit Task</DialogTitle>
+                                </DialogHeader>
+                                <EditTaskForm task={task} />
+                            </DialogContent>
+                        </Dialog>
 
-            <div className="flex space-x-3">
-                <button className="text-muted-foreground hover:text-primary">
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <FaEdit />
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Create New Task</DialogTitle>
-                            </DialogHeader>
-                            <EditTaskForm />
-                        </DialogContent>
-                    </Dialog>
-                </button>
-                <button className="text-muted-foreground hover:text-destructive">
-                    <FaTrash className="text-base" />
-                </button>
-                <button className={`${sampleTask.is_completed ? 'text-yellow-600' : 'text-green-600'} hover:opacity-80`}>
-                    {sampleTask.is_completed ? <FaTimes className="text-base" /> : <FaCheck className="text-base" />}
-                </button>
+                        <button className="text-muted-foreground hover:text-destructive m-0 p-0">
+                            <FaTrash className="text-base" />
+                        </button>
+
+                        <button className={`m-0 p-0 ${task.is_completed ? 'text-yellow-600' : 'text-green-600'} hover:opacity-80`}>
+                            {task.is_completed ? <FaTimes className="text-base" /> : <FaCheck className="text-base" />}
+                        </button>
+                    </div>
+                </div>
+                <p className="text-muted-foreground mt-1 text-sm break-words break-all">{task.description || 'No Description'}</p>
             </div>
         </div>
     );
