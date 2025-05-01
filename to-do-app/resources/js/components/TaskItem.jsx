@@ -1,6 +1,7 @@
 import EditTaskForm from '@/components/EditTaskForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { router } from '@inertiajs/react';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaCheck, FaEdit, FaTimes, FaTrash } from 'react-icons/fa';
 import { toast } from 'sonner';
@@ -8,6 +9,7 @@ import { toast } from 'sonner';
 export default function TaskItem({ task }) {
     const [open, setOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     const toggleTask = () => {
         router.patch(
@@ -26,20 +28,28 @@ export default function TaskItem({ task }) {
     };
 
     const confirmDelete = () => {
-        router.delete(route('tasks.destroy', task.id), {
-            onSuccess: () => {
-                toast.success('Task deleted successfully!');
-                setDeleteDialogOpen(false);
-            },
-            onError: () => {
-                toast.error('There was an error deleting the task.');
-            },
-            preserveScroll: true,
-        });
+        setIsVisible(false);
+        setTimeout(() => {
+            router.delete(route('tasks.destroy', task.id), {
+                onSuccess: () => {
+                    toast.success('Task deleted successfully!');
+                },
+                onError: () => toast.error('There was an error deleting the task.'),
+                preserveScroll: true,
+            });
+        }, 500);
     };
 
     return (
-        <div className="dark:bg-muted flex w-full items-start justify-between rounded-md border bg-white p-4 shadow-sm md:rounded-xl">
+        <motion.div
+            key={task.id}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5 }}
+            className="dark:bg-muted flex w-full items-start justify-between rounded-md border bg-white p-4 shadow-sm md:rounded-xl transition-all duration-500"
+            style={{ display: isVisible ? 'flex' : 'none' }}
+        >
             <div className="flex w-full flex-col">
                 <div className="flex flex-row items-center justify-between gap-5">
                     <h3 className={`max-w-[75%] text-base font-medium break-all ${task.is_completed ? 'text-muted-foreground line-through' : ''}`}>
@@ -92,6 +102,6 @@ export default function TaskItem({ task }) {
                     </div>
                 </DialogContent>
             </Dialog>
-        </div>
+        </motion.div>
     );
 }
