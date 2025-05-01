@@ -1,6 +1,7 @@
 import EditTaskForm from '@/components/EditTaskForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { router } from '@inertiajs/react';
+import { useState } from 'react';
 import { FaCheck, FaEdit, FaTimes, FaTrash } from 'react-icons/fa';
 import { toast } from 'sonner';
 
@@ -21,6 +22,8 @@ export default function TaskItem({ task }) {
         );
     };
 
+    const [open, setOpen] = useState(false);
+
     return (
         <div className="dark:bg-muted flex w-full items-start justify-between rounded-md border bg-white p-4 shadow-sm md:rounded-xl">
             <div className="flex w-full flex-col">
@@ -29,7 +32,7 @@ export default function TaskItem({ task }) {
                         {task.title}
                     </h3>
                     <div className="flex shrink-0 items-center gap-2">
-                        <Dialog>
+                        <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
                                 <button className="text-muted-foreground hover:text-primary m-0 p-0">
                                     <FaEdit className="text-base" />
@@ -39,7 +42,7 @@ export default function TaskItem({ task }) {
                                 <DialogHeader>
                                     <DialogTitle>Edit Task</DialogTitle>
                                 </DialogHeader>
-                                <EditTaskForm task={task} />
+                                <EditTaskForm task={task} onClose={() => setOpen(false)} />
                             </DialogContent>
                         </Dialog>
 

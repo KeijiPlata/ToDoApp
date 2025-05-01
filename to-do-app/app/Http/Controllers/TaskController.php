@@ -35,7 +35,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:50',
+            'title' => 'required|string|max:30',
             'description' => 'nullable|string|max:200',
         ]);
 
@@ -79,7 +79,7 @@ class TaskController extends Controller
 
         $task->update($validated);
 
-        return response()->json($task);
+        return redirect()->back()->with('success', 'Task updated successfully.');
     }
 
     /**
