@@ -34,7 +34,7 @@ export default function Dashboard() {
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-row items-center justify-between">
-                        <h2>Tasks</h2>
+                        <h2 className='font-bold'>Tasks</h2>
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
                                 <button className="bg-custom-violet cursor flex flex-row items-center justify-center gap-2 rounded-sm px-3 py-1 font-bold text-white">
@@ -69,7 +69,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
-                    <h2>Completed</h2>
+                    <h2 className='font-bold'>Completed</h2>
                     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         {completedTasks.length > 0 ? (
                             <AnimatePresence mode="popLayout">
