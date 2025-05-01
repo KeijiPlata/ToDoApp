@@ -93,7 +93,7 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return response()->json(['message' => 'Task deleted successfully']);
+        return redirect()->back()->with('success', 'Task deleted successfully.');
     }
 
     public function toggleComplete(Task $task)
