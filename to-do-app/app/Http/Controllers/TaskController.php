@@ -105,6 +105,6 @@ class TaskController extends Controller
         $task->is_completed = !$task->is_completed;
         $task->save();
 
-        return response()->json($task);
+        return redirect()->back()->with('success', 'Task created successfully.');
     }
 }
